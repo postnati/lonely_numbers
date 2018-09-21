@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Main {
-
     public static void main(String[] args) {
         // ---------------------------------------------------------------
         // Base Test: [ 2, 3, 7, 3, 2, 3, 10 ] would return [7, 10]
