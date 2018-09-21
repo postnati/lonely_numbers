@@ -14,10 +14,16 @@ package com.bluemedora;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
+        runLonelyNumbersUsingCollection();
+        runLonelyNumbersUsingArrays();
+    }
+
+    private static void runLonelyNumbersUsingCollection() {
         // ---------------------------------------------------------------
         // Base Test: [ 2, 3, 7, 3, 2, 3, 10 ] would return [7, 10]
         // ---------------------------------------------------------------
@@ -60,7 +66,7 @@ public class Main {
         // ---------------------------------------------------------------
         // Empty Test: [] would return []
         // ---------------------------------------------------------------
-        ArrayList<Integer> emptyInput = new ArrayList<>(Arrays.asList());
+        ArrayList<Integer> emptyInput = new ArrayList<>(Collections.emptyList());
         ArrayList emptyOutput = lonelyNumbersUsingCollections(emptyInput);
 
         if(emptyOutput.size() == 0) {
@@ -81,10 +87,52 @@ public class Main {
         }
     }
 
+
+    private static void runLonelyNumbersUsingArrays() {
+        // ---------------------------------------------------------------
+        // Base Test: [ 2, 3, 7, 3, 2, 3, 10 ] would return [7, 10]
+        // ---------------------------------------------------------------
+        int[] baseInput = new int[]{2, 3, 7, 3, 2, 3, 10};
+        int[] baseOutput = lonelyNumbersUsingArrays(baseInput);
+
+        System.out.println("BaseOutput: " + Arrays.toString(baseOutput));
+
+        // ---------------------------------------------------------------
+        // All Duplicates Test: [ 1, 2, 3, 3, 2, 1] would return []
+        // ---------------------------------------------------------------
+        int[] allDuplicatesInput = new int[]{1, 2, 3, 3, 2, 1};
+        int[]  allDuplicatesOutput = lonelyNumbersUsingArrays(allDuplicatesInput);
+
+        System.out.println("All Duplicates: " + Arrays.toString(allDuplicatesOutput));
+
+        // ---------------------------------------------------------------
+        // Unique Test: [ -1, 2, -3, 3, -2, 1 ] would return [-1, 2, -3, 3, -2, 1]
+        // ---------------------------------------------------------------
+        int[] uniqueInput = new int[]{-1, 2, -3, 3, -2, 1};
+        int[] uniqueOutput = lonelyNumbersUsingArrays(uniqueInput);
+
+        System.out.println("UniqueOutput: " + Arrays.toString(uniqueOutput));
+
+        // ---------------------------------------------------------------
+        // Empty Test: [] would return []
+        // ---------------------------------------------------------------
+        int[] emptyInput = new int[0];
+        int[] emptyOutput = lonelyNumbersUsingArrays(emptyInput);
+
+        System.out.println("emptyOutput: " + Arrays.toString(emptyOutput));
+
+        // ---------------------------------------------------------------
+        // Null Test: [] would return []
+        // ---------------------------------------------------------------
+        int[] nullOutput = lonelyNumbersUsingArrays(null);
+
+        System.out.println("nullOutput: " + Arrays.toString(nullOutput));
+    }
+
     /*
      * lonelyNumbers method using Java collections
      */
-    public static ArrayList lonelyNumbersUsingCollections(ArrayList<Integer> input) {
+    private static ArrayList lonelyNumbersUsingCollections(ArrayList<Integer> input) {
         ArrayList<Integer> output = new ArrayList<>();
 
         if(input == null || input.isEmpty()) {
@@ -111,5 +159,78 @@ public class Main {
         }
 
         return output;
+    }
+
+    /*
+     * lonelyNumbers method using Java Arrays
+     */
+    private static int[] lonelyNumbersUsingArrays(int[] input) {
+        int[] output = new int[0];
+        int[] rejected = new int[0];
+
+        if(input == null || input.length == 0) {
+            return output;
+        }
+
+        // For loop using old style counting
+        for(int index = 0; index < input.length; index++) {
+            int key = input[index];
+
+            if(!intArrayContains(output, key) && !intArrayContains(rejected, key)) {
+                output = addIntValueToArray(output, key);
+            } else if(intArrayContains(output, key)) {
+                output = removeIntValueFromArray(output, key);
+                rejected = addIntValueToArray(rejected, key);
+            }
+        }
+
+        return output;
+    }
+
+    private static boolean intArrayContains(int[] array, int value) {
+        boolean isFound = false;
+        for(int index = 0; index < array.length; index++) {
+            if(array[index] == value) {
+                isFound = true;
+            }
+        }
+
+        return isFound;
+    }
+
+    private static int[] addIntValueToArray(int[] array, int newValue) {
+        int[] newArray = new int[array.length + 1];
+        int index;
+
+        for(index = 0; index < array.length; index++) {
+            newArray[index] = array[index];
+        }
+
+        newArray[index] = newValue;
+
+        return newArray;
+    }
+
+    private static int[] removeIntValueFromArray(int[] array, int value) {
+        int foundCount = 0;
+
+        for(int index = 0; index < array.length; index++) {
+            if(array[index] == value) {
+                foundCount = foundCount + 1;
+            }
+        }
+
+        int[] newArray = new int[array.length - foundCount];
+        int offset = 0;
+
+        for(int index = 0; index < array.length; index++) {
+            if(array[index] == value) {
+                offset = offset + 1;
+            } else {
+                newArray[index-offset] = array[index];
+            }
+        }
+
+        return newArray;
     }
 }
