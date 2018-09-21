@@ -19,8 +19,16 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Running LonelyNumbers Using Collections");
+        System.out.println("---------------------------------------");
         runLonelyNumbersUsingCollection();
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Running LonelyNumbers Using Arrays");
+        System.out.println("----------------------------------");
         runLonelyNumbersUsingArrays();
+        System.out.println();
     }
 
     private static void runLonelyNumbersUsingCollection() {
